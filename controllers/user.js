@@ -7,37 +7,50 @@ function UserRoute(app) {
         path:'/',
         handler:function(request,h) {
     
-            return'Framework hapi.js - mongoose';
+            return 'Framework hapi.js - mongoose';
         }
     });
 
+    
     app.route({
         method:'GET',
         path:'/user',
-        handler:function(request,h) {
+        handler:function(request,response) {
             
-            // User.find({})
-            // .then(function(results) {
-            //     res.send(results);
-            // }).catch(function(err) {
-            //     res.status(400).send(err.message);
-            // });
+            const promise = new Promise((resolve, reject) => {
+                User.find({})
+                .then(function(results) {
+                    resolve(results);
+                }).catch(function(err) {
+                    reject(err.message);
+                });
+            });
+        
+            return promise;
+
         }
     });
 
     app.route({
         method:'GET',
-        path:'/user/:id',
+        path:'/user/{id}',
         handler:function(request,h) {
     
-            // const id = req.params.id;
+            const promise = new Promise((resolve, reject) => {
+               
+                const id = request.params.id;
 
-            // User.find({ _id: id })
-            // .then(function(result) {
-            //     res.send(result);
-            // }).catch(function(err) {
-            //     res.status(400).send(err.message);
-            // });
+                User.find({ _id: id })
+                .then(function(result) {
+                    resolve(result);
+                }).catch(function(err) {
+                    reject(err.message);
+                });
+
+            });
+        
+            return promise;
+
         }
     });
     
@@ -46,45 +59,64 @@ function UserRoute(app) {
         path:'/user',
         handler:function(request,h) {
 
-            // var newUser = User(req.body);
-            // newUser.save()
-            // .then(function() {
-            //     res.status(201).send(newUser);
-            // }).catch(function(err) {
-            //     res.status(422).send(err.message);
-            // });
+            const promise = new Promise((resolve, reject) => {
+               
+                var newUser = User(request.body);
+                newUser.save()
+                .then(function() {
+                    resolve(newUser);
+                }).catch(function(err) {
+                    reject(err.message);
+                });
+            
+            });
+        
+        return promise;
+
         }
     });
 
     app.route({
         method:'PUT',
-        path:'/user/:id',
+        path:'/user/{id}',
         handler:function(request,h) {
 
-            // const id = req.params.id
-        
-            // User.findOneAndUpdate({ _id: id }, req.body)
-            // .then(function() {
-            //     res.sendStatus(200);
-            // }).catch(function(err) {
-            //     res.status(422).send(err.message);
-            // });
+            const promise = new Promise((resolve, reject) => {
+               
+                const id = request.params.id
+            
+                User.findOneAndUpdate({ _id: id }, request.body)
+                .then(function() {
+                    resolve("Ok");
+                }).catch(function(err) {
+                    reject(err.message);
+                });
+
+            });
+            
+            return promise;
         }
     });
 
     app.route({
         method:'DELETE',
-        path:'/user/:id',
+        path:'/user/{id}',
         handler:function(request,h) {
 
-            // const id = req.params.id;
+            const promise = new Promise((resolve, reject) => {
+               
+                const id = request.params.id;
 
-            // User.deleteOne({ _id: id })
-            // .then(function() {
-            //     res.sendStatus(204);
-            // }).catch(function(err) {
-            //     res.status(400).send(err.message);
-            // });
+                User.deleteOne({ _id: id })
+                .then(function() {
+                    resolve("Ok");
+                }).catch(function(err) {
+                    reject(err.message);
+                });
+
+            });
+                
+            return promise;
         }
     });
 }
