@@ -61,7 +61,7 @@ function UserRoute(app) {
 
             const promise = new Promise((resolve, reject) => {
                
-                var newUser = User(request.body);
+                var newUser = User(request.payload);
                 newUser.save()
                 .then(function() {
                     resolve(newUser);
@@ -85,7 +85,7 @@ function UserRoute(app) {
                
                 const id = request.params.id
             
-                User.findOneAndUpdate({ _id: id }, request.body)
+                User.findOneAndUpdate({ _id: id }, request.payload)
                 .then(function() {
                     resolve("Ok");
                 }).catch(function(err) {
